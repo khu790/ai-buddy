@@ -1,0 +1,13 @@
+bin/
+obj/
+publish/
+.vs/
+.idea/
+*.user
+*.suo
+*.pdb
+*.msi
+*.exe
+*.pfx
+secrets.json
+appsettings.Local.json

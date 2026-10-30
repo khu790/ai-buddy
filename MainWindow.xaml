@@ -1,0 +1,50 @@
+<Window x:Class="AiBuddy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="AI Buddy" Width="196" Height="246" WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent" Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize"
+        WindowStartupLocation="Manual" Loaded="Window_Loaded">
+  <Window.ContextMenu>
+    <ContextMenu>
+      <MenuItem Header="Settings" Click="Settings_Click" />
+      <MenuItem Header="Exit" Click="Exit_Click" />
+    </ContextMenu>
+  </Window.ContextMenu>
+  <Border Background="#F8F5FF" BorderBrush="#D9D0F6" BorderThickness="1" CornerRadius="25" Padding="12">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="30" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="34" />
+        <RowDefinition Height="32" />
+      </Grid.RowDefinitions>
+      <DockPanel Grid.Row="0" MouseLeftButtonDown="DragWindow">
+        <TextBlock Text="AI BUDDY" FontSize="12" FontWeight="Bold" Foreground="#55449A" VerticalAlignment="Center" />
+        <Button Content="⋯" Width="28" Height="26" DockPanel.Dock="Right" Click="Settings_Click"
+                Background="Transparent" BorderThickness="0" FontSize="18" Foreground="#55449A" />
+      </DockPanel>
+      <Viewbox x:Name="RabbitImage" Grid.Row="1" Margin="9,0,9,0" Stretch="Uniform">
+        <Canvas Width="120" Height="126">
+          <Ellipse Canvas.Left="20" Canvas.Top="13" Width="29" Height="77" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" RenderTransformOrigin="0.5,0.95">
+            <Ellipse.RenderTransform><RotateTransform Angle="-12" /></Ellipse.RenderTransform>
+          </Ellipse>
+          <Ellipse Canvas.Left="67" Canvas.Top="8" Width="29" Height="82" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" RenderTransformOrigin="0.5,0.95">
+            <Ellipse.RenderTransform><RotateTransform Angle="11" /></Ellipse.RenderTransform>
+          </Ellipse>
+          <Ellipse Canvas.Left="27" Canvas.Top="39" Width="70" Height="68" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" />
+          <Ellipse Canvas.Left="19" Canvas.Top="87" Width="85" Height="35" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" />
+          <Ellipse Canvas.Left="9" Canvas.Top="98" Width="29" Height="19" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" />
+          <Ellipse Canvas.Left="86" Canvas.Top="98" Width="29" Height="19" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" />
+          <Ellipse Canvas.Left="45" Canvas.Top="64" Width="7" Height="9" Fill="#493E5A" />
+          <Ellipse Canvas.Left="73" Canvas.Top="64" Width="7" Height="9" Fill="#493E5A" />
+          <Ellipse Canvas.Left="38" Canvas.Top="79" Width="12" Height="7" Fill="#F5B9C8" Opacity="0.8" />
+          <Ellipse Canvas.Left="77" Canvas.Top="79" Width="12" Height="7" Fill="#F5B9C8" Opacity="0.8" />
+          <Ellipse Canvas.Left="58" Canvas.Top="76" Width="9" Height="7" Fill="#E58EA8" />
+          <Path Data="M 62,83 Q 59,89 55,87 M 62,83 Q 65,89 69,87" Stroke="#725A78" StrokeThickness="1.6" Fill="Transparent" />
+        </Canvas>
+      </Viewbox>
+      <Button x:Name="ChatButton" Grid.Row="2" Content="Chat" Click="Chat_Click" Background="#7256D8" Foreground="White" FontWeight="SemiBold" BorderThickness="0" />
+      <Button x:Name="WatchButton" Grid.Row="3" Margin="0,6,0,0" Content="Watch off" Click="Watch_Click" Background="#E8E2F8" Foreground="#493E5A" BorderThickness="0" />
+    </Grid>
+  </Border>
+</Window>
