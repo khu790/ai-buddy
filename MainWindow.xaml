@@ -23,24 +23,21 @@
         <Button Content="⋯" Width="28" Height="26" DockPanel.Dock="Right" Click="Settings_Click"
                 Background="Transparent" BorderThickness="0" FontSize="18" Foreground="#55449A" />
       </DockPanel>
-      <Viewbox x:Name="RabbitImage" Grid.Row="1" Margin="9,0,9,0" Stretch="Uniform">
-        <Canvas Width="120" Height="126">
-          <Ellipse Canvas.Left="20" Canvas.Top="13" Width="29" Height="77" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" RenderTransformOrigin="0.5,0.95">
-            <Ellipse.RenderTransform><RotateTransform Angle="-12" /></Ellipse.RenderTransform>
-          </Ellipse>
-          <Ellipse Canvas.Left="67" Canvas.Top="8" Width="29" Height="82" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" RenderTransformOrigin="0.5,0.95">
-            <Ellipse.RenderTransform><RotateTransform Angle="11" /></Ellipse.RenderTransform>
-          </Ellipse>
-          <Ellipse Canvas.Left="27" Canvas.Top="39" Width="70" Height="68" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" />
-          <Ellipse Canvas.Left="19" Canvas.Top="87" Width="85" Height="35" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" />
-          <Ellipse Canvas.Left="9" Canvas.Top="98" Width="29" Height="19" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" />
-          <Ellipse Canvas.Left="86" Canvas.Top="98" Width="29" Height="19" Fill="#FFFDFD" Stroke="#D6CDEE" StrokeThickness="2" />
-          <Ellipse Canvas.Left="45" Canvas.Top="64" Width="7" Height="9" Fill="#493E5A" />
-          <Ellipse Canvas.Left="73" Canvas.Top="64" Width="7" Height="9" Fill="#493E5A" />
-          <Ellipse Canvas.Left="38" Canvas.Top="79" Width="12" Height="7" Fill="#F5B9C8" Opacity="0.8" />
-          <Ellipse Canvas.Left="77" Canvas.Top="79" Width="12" Height="7" Fill="#F5B9C8" Opacity="0.8" />
-          <Ellipse Canvas.Left="58" Canvas.Top="76" Width="9" Height="7" Fill="#E58EA8" />
-          <Path Data="M 62,83 Q 59,89 55,87 M 62,83 Q 65,89 69,87" Stroke="#725A78" StrokeThickness="1.6" Fill="Transparent" />
+      <Viewbox x:Name="PetImage" Grid.Row="1" Margin="9,0,9,0" Stretch="Uniform">
+        <Canvas Width="140" Height="126">
+          <Ellipse Canvas.Left="67" Canvas.Top="0" Width="6" Height="5" Fill="#B69ACD" />
+          <Path Data="M 70,3 L 70,39" Stroke="#B69ACD" StrokeThickness="2" StrokeStartLineCap="Round" />
+          <Path Data="M 52,49 Q 37,38 26,42 L 13,31 M 50,57 Q 35,50 21,57 L 9,52 M 49,65 Q 34,65 21,77 L 10,88 M 53,73 Q 40,82 29,98 L 19,111 M 88,49 Q 103,38 114,42 L 127,31 M 90,57 Q 105,50 119,57 L 131,52 M 91,65 Q 106,65 119,77 L 130,88 M 87,73 Q 100,82 111,98 L 121,111" Stroke="#574268" StrokeThickness="3.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent" />
+          <Ellipse Canvas.Left="47" Canvas.Top="36" Width="46" Height="48" Fill="#64527F" Stroke="#3D304F" StrokeThickness="2" />
+          <Ellipse Canvas.Left="53" Canvas.Top="39" Width="34" Height="38" Fill="#76628F" Opacity="0.7" />
+          <Ellipse Canvas.Left="53" Canvas.Top="66" Width="34" Height="32" Fill="#8670A1" Stroke="#3D304F" StrokeThickness="2" />
+          <Ellipse x:Name="LeftOpenEye" Canvas.Left="58" Canvas.Top="74" Width="10" Height="13" Fill="#E8D8FF" />
+          <Ellipse x:Name="RightOpenEye" Canvas.Left="72" Canvas.Top="74" Width="10" Height="13" Fill="#E8D8FF" />
+          <Path x:Name="LeftClosedEye" Data="M 57,81 Q 63,86 69,81" Stroke="#E8D8FF" StrokeThickness="2" StrokeStartLineCap="Round" Fill="Transparent" Visibility="Collapsed" />
+          <Path x:Name="RightClosedEye" Data="M 71,81 Q 77,86 83,81" Stroke="#E8D8FF" StrokeThickness="2" StrokeStartLineCap="Round" Fill="Transparent" Visibility="Collapsed" />
+          <Path Data="M 67,88 Q 70,91 73,88" Stroke="#342A42" StrokeThickness="1.5" StrokeStartLineCap="Round" Fill="Transparent" />
+          <TextBlock x:Name="SleepMarks" Canvas.Left="88" Canvas.Top="42" Text="Zz" FontSize="15" FontWeight="Bold" Foreground="#72D0C1" Visibility="Collapsed" />
+          <TextBlock x:Name="ActiveSparkle" Canvas.Left="91" Canvas.Top="47" Text="✦" FontSize="18" Foreground="#72D0C1" />
         </Canvas>
       </Viewbox>
       <Button x:Name="ChatButton" Grid.Row="2" Content="Chat" Click="Chat_Click" Background="#7256D8" Foreground="White" FontWeight="SemiBold" BorderThickness="0" />

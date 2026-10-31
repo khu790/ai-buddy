@@ -8,14 +8,16 @@ public partial class ChatWindow : Window
 {
     private readonly Func<BuddySettings> _getSettings;
     private readonly Action _openSettings;
+    private readonly Action<bool> _setAskingState;
     private readonly List<ChatTurn> _history = [];
     private bool _sending;
 
-    public ChatWindow(Func<BuddySettings> getSettings, Action openSettings)
+    public ChatWindow(Func<BuddySettings> getSettings, Action openSettings, Action<bool> setAskingState)
     {
         InitializeComponent();
         _getSettings = getSettings;
         _openSettings = openSettings;
+        _setAskingState = setAskingState;
         AddBubble("Hi! Ask me about anything on your screen. I capture the current screen for each question. Local Ollama mode keeps the image on this PC.", false);
     }
 
@@ -39,6 +41,7 @@ public partial class ChatWindow : Window
         var question = QuestionBox.Text.Trim();
         if (question.Length == 0 || _sending) return;
         _sending = true;
+        _setAskingState(true);
         SendButton.IsEnabled = false;
         QuestionBox.Clear();
         AddBubble(question, true);
@@ -64,6 +67,7 @@ public partial class ChatWindow : Window
             SendButton.IsEnabled = true;
             QuestionBox.Focus();
             _sending = false;
+            _setAskingState(false);
         }
     }
 

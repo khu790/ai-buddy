@@ -7,11 +7,14 @@ namespace AiBuddy;
 public partial class MainWindow : Window
 {
     private readonly DispatcherTimer _watchTimer = new() { Interval = TimeSpan.FromSeconds(3) };
+    private readonly DispatcherTimer _activityTimer = new() { Interval = TimeSpan.FromSeconds(2) };
     private BuddySettings _settings = SettingsService.Load();
     private byte[]? _lastSample;
     private DateTime _lastProactive = DateTime.MinValue;
     private string? _lastSuggestion;
     private bool _requestInProgress;
+    private bool _isAskingQuestion;
+    private bool _petIsActive;
     private ChatWindow? _chat;
     private readonly System.Windows.Media.TranslateTransform _bob = new();
     private readonly DispatcherTimer _animationTimer = new() { Interval = TimeSpan.FromMilliseconds(40) };
@@ -20,16 +23,19 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        RabbitImage.RenderTransform = _bob;
+        PetImage.RenderTransform = _bob;
         _watchTimer.Tick += WatchTimer_Tick;
-        _animationTimer.Tick += (_, _) => _bob.Y = Math.Sin((DateTime.UtcNow - _animationStarted).TotalSeconds * 2.4) * 4;
+        _activityTimer.Tick += (_, _) => UpdatePetState();
+        _animationTimer.Tick += (_, _) => _bob.Y = Math.Sin((DateTime.UtcNow - _animationStarted).TotalSeconds * (_petIsActive ? 2.4 : 0.7)) * (_petIsActive ? 4 : 1);
         _animationTimer.Start();
+        _activityTimer.Start();
         WatchButton.Content = _settings.WatchOnStart ? "Watching · pause" : "Watch off";
         WatchButton.ToolTip = "When enabled, AI Buddy checks for screen changes every 3 seconds and can pop up coding tips. It does not save a recording.";
         if (_settings.WatchOnStart)
         {
             _watchTimer.Start();
         }
+        UpdatePetState();
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -46,7 +52,7 @@ public partial class MainWindow : Window
 
     private void Chat_Click(object sender, RoutedEventArgs e)
     {
-        _chat ??= new ChatWindow(() => _settings, OpenSettings);
+        _chat ??= new ChatWindow(() => _settings, OpenSettings, SetAskingState);
         _chat.Closed += (_, _) => _chat = null;
         _chat.Show();
         _chat.Activate();
@@ -74,6 +80,7 @@ public partial class MainWindow : Window
             _settings = _settings with { WatchOnStart = true };
         }
         SettingsService.Save(_settings);
+        UpdatePetState();
     }
 
     private async void WatchTimer_Tick(object? sender, EventArgs e)
@@ -113,6 +120,7 @@ public partial class MainWindow : Window
             WatchButton.Content = "Watch paused";
             WatchButton.ToolTip = ex.Message;
             _chat?.ShowStatus("Screen watching paused: " + ex.Message);
+            UpdatePetState();
         }
         finally { _requestInProgress = false; }
     }
@@ -132,7 +140,26 @@ public partial class MainWindow : Window
             WatchButton.ToolTip = _watchTimer.IsEnabled
                 ? "Coding advice is on: the screen is sampled every 3 seconds and changed frames may be analyzed. Click to pause."
                 : "Screen watching is paused. No screen captures are being taken.";
+            UpdatePetState();
         }
+    }
+
+    private void SetAskingState(bool asking)
+    {
+        _isAskingQuestion = asking;
+        UpdatePetState();
+    }
+
+    private void UpdatePetState()
+    {
+        var awake = _isAskingQuestion || (_watchTimer.IsEnabled && CodingActivityDetector.IsCodingWindowForeground());
+        _petIsActive = awake;
+        LeftOpenEye.Visibility = awake ? Visibility.Visible : Visibility.Collapsed;
+        RightOpenEye.Visibility = awake ? Visibility.Visible : Visibility.Collapsed;
+        LeftClosedEye.Visibility = awake ? Visibility.Collapsed : Visibility.Visible;
+        RightClosedEye.Visibility = awake ? Visibility.Collapsed : Visibility.Visible;
+        SleepMarks.Visibility = awake ? Visibility.Collapsed : Visibility.Visible;
+        ActiveSparkle.Visibility = awake ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void Exit_Click(object sender, RoutedEventArgs e) => System.Windows.Application.Current.Shutdown();

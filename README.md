@@ -52,7 +52,8 @@ The framework-dependent output is placed under `bin\Release\net8.0-windows\win-x
 
 ## Customize the appearance
 
-- Edit `MainWindow.xaml` to change the rabbit artwork, layout, colors, and buttons.
+- Edit `MainWindow.xaml` to change the hanging spider artwork, layout, colors, and buttons.
+- Edit `CodingActivityDetector.cs` to change which foreground coding tools wake the spider. The spider wakes during a question even when screen watching is off; coding-app detection only runs while screen watching is enabled.
 - Edit `ChatWindow.xaml` and `SettingsWindow.xaml` to adjust the chat and settings panels.
 - Edit `SuggestionPopup.cs` to change the proactive suggestion bubble.
 - Rebuild and run with `dotnet run` to preview your changes.
