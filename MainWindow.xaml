@@ -15,10 +15,11 @@
       <MenuItem Header="Exit" Click="Exit_Click" />
     </ContextMenu>
   </Window.ContextMenu>
-  <Viewbox x:Name="PetImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Top">
-    <Canvas Width="140" Height="280" Background="Transparent">
+  <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Top">
+    <Canvas x:Name="PetCanvas" Width="140" Height="280" Background="Transparent">
       <Ellipse Canvas.Left="67" Canvas.Top="0" Width="6" Height="5" Fill="#B69ACD" />
-      <Path Data="M 70,3 L 70,157" Stroke="#B69ACD" StrokeThickness="2" StrokeStartLineCap="Round" />
+      <Path x:Name="WebThread" Data="M 70,3 L 70,157" Stroke="#B69ACD" StrokeThickness="2" StrokeStartLineCap="Round" />
+      <Canvas x:Name="SpiderArtwork" Width="140" Height="280" Background="Transparent">
       <Path Data="M 52,169 Q 37,158 26,162 L 13,151 M 50,177 Q 35,170 21,177 L 9,172 M 49,185 Q 34,185 21,197 L 10,208 M 53,193 Q 40,202 29,218 L 19,231 M 88,169 Q 103,158 114,162 L 127,151 M 90,177 Q 105,170 119,177 L 131,172 M 91,185 Q 106,185 119,197 L 130,208 M 87,193 Q 100,202 111,218 L 121,231" Stroke="#574268" StrokeThickness="3.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent" />
       <Ellipse Canvas.Left="47" Canvas.Top="156" Width="46" Height="48" Fill="#64527F" Stroke="#3D304F" StrokeThickness="2" />
       <Ellipse Canvas.Left="53" Canvas.Top="159" Width="34" Height="38" Fill="#76628F" Opacity="0.7" />
@@ -30,6 +31,7 @@
       <Path Data="M 67,208 Q 70,211 73,208" Stroke="#342A42" StrokeThickness="1.5" StrokeStartLineCap="Round" Fill="Transparent" />
       <TextBlock x:Name="SleepMarks" Canvas.Left="88" Canvas.Top="162" Text="Zz" FontSize="15" FontWeight="Bold" Foreground="#72D0C1" Visibility="Collapsed" />
       <TextBlock x:Name="ActiveSparkle" Canvas.Left="91" Canvas.Top="167" Text="✦" FontSize="18" Foreground="#72D0C1" />
+      </Canvas>
     </Canvas>
   </Viewbox>
 </Window>

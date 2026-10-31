@@ -23,7 +23,7 @@ AI Buddy defaults to local Ollama at `http://localhost:11434`; no OpenAI API key
 
 ## Spider controls
 
-- The spider is a transparent, always-on-top overlay centered at the top of the primary display. It has no card or panel behind it.
+- The spider is a transparent, always-on-top overlay near the left edge of the primary display. Its web drops one quarter of the usable screen height before the spider; it has no card or panel behind it.
 - Left-click the spider to open chat. Right-click it for chat, settings, screen-watching, hide, and exit controls.
 - To hide or bring the spider back, use **Hide spider** or **Show spider** from the AI Buddy tray icon menu. It starts visible when the app starts.
 - The tray menu also lets you pause or resume screen watching without opening a panel.
@@ -59,7 +59,7 @@ The framework-dependent output is placed under `bin\Release\net8.0-windows\win-x
 
 ## Customize the appearance
 
-- Edit `MainWindow.xaml` to change the hanging spider artwork, overlay position, and colors.
+- Edit `MainWindow.xaml` and `MainWindow.xaml.cs` to change the hanging spider artwork, overlay position, thread length, and colors.
 - Edit `CodingActivityDetector.cs` to change which foreground coding tools wake the spider. The spider wakes during a question even when screen watching is off; coding-app detection only runs while screen watching is enabled.
 - Edit `ChatWindow.xaml` and `SettingsWindow.xaml` to adjust the chat and settings panels.
 - Edit `SuggestionPopup.cs` to change the proactive suggestion bubble.

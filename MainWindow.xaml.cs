@@ -1,5 +1,8 @@
+using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace AiBuddy;
@@ -23,7 +26,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        PetImage.RenderTransform = _bob;
+        SpiderArtwork.RenderTransform = _bob;
         _watchTimer.Tick += WatchTimer_Tick;
         _activityTimer.Tick += (_, _) => UpdatePetState();
         _animationTimer.Tick += (_, _) => _bob.Y = Math.Sin((DateTime.UtcNow - _animationStarted).TotalSeconds * (_petIsActive ? 2.4 : 0.7)) * (_petIsActive ? 4 : 1);
@@ -40,7 +43,12 @@ public partial class MainWindow : Window
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         var area = SystemParameters.WorkArea;
-        Left = area.Left + (area.Width - Width) / 2;
+        var threadLength = Math.Max(120, area.Height / 4);
+        WebThread.Data = Geometry.Parse($"M 70,3 L 70,{threadLength.ToString("0.##", CultureInfo.InvariantCulture)}");
+        Canvas.SetTop(SpiderArtwork, threadLength - 156);
+        PetCanvas.Height = threadLength + 124;
+        Height = PetCanvas.Height;
+        Left = area.Left + 32;
         Top = area.Top;
     }
 
