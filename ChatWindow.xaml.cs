@@ -16,7 +16,7 @@ public partial class ChatWindow : Window
         InitializeComponent();
         _getSettings = getSettings;
         _openSettings = openSettings;
-        AddBubble("Hi! Ask me about anything on your screen. The current screen is included with each question.", false);
+        AddBubble("Hi! Ask me about anything on your screen. I capture the current screen for each question. Local Ollama mode keeps the image on this PC.", false);
     }
 
     public void AddProactive(string message) => Dispatcher.Invoke(() => AddBubble(message, false));
@@ -47,8 +47,7 @@ public partial class ChatWindow : Window
         try
         {
             using var frame = ScreenCapture.CaptureFrame();
-            var client = new OpenAiClient(_getSettings().Model);
-            var answer = await client.AskAsync(question, frame.ToJpeg(), _history);
+            var answer = await AiAssistant.AskAsync(_getSettings(), question, frame.ToJpeg(), _history);
             _history.Add(new ChatTurn("user", question));
             _history.Add(new ChatTurn("assistant", answer));
             if (_history.Count > 16) _history.RemoveRange(0, _history.Count - 16);

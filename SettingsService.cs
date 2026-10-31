@@ -14,7 +14,19 @@ public static class SettingsService
         try
         {
             if (File.Exists(FilePath))
-                return JsonSerializer.Deserialize<BuddySettings>(File.ReadAllText(FilePath)) ?? BuddySettings.Default;
+            {
+                var saved = JsonSerializer.Deserialize<BuddySettings>(File.ReadAllText(FilePath));
+                if (saved is null) return BuddySettings.Default;
+                var legacySettings = string.IsNullOrWhiteSpace(saved.Provider);
+                return saved with
+                {
+                    Provider = legacySettings ? BuddySettings.Default.Provider : saved.Provider,
+                    Model = legacySettings && saved.Model == "gpt-6-astra"
+                        ? BuddySettings.Default.Model
+                        : string.IsNullOrWhiteSpace(saved.Model) ? BuddySettings.Default.Model : saved.Model,
+                    OllamaUrl = string.IsNullOrWhiteSpace(saved.OllamaUrl) ? BuddySettings.Default.OllamaUrl : saved.OllamaUrl
+                };
+            }
         }
         catch { }
         return BuddySettings.Default;

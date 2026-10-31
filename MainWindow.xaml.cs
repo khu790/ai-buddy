@@ -24,7 +24,11 @@ public partial class MainWindow : Window
         _animationTimer.Tick += (_, _) => _bob.Y = Math.Sin((DateTime.UtcNow - _animationStarted).TotalSeconds * 2.4) * 4;
         _animationTimer.Start();
         WatchButton.Content = _settings.WatchOnStart ? "Watching · pause" : "Watch off";
-        if (_settings.WatchOnStart) _watchTimer.Start();
+        WatchButton.ToolTip = "When enabled, AI Buddy checks for screen changes every 3 seconds. It keeps no recording file.";
+        if (_settings.WatchOnStart)
+        {
+            _watchTimer.Start();
+        }
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -45,6 +49,9 @@ public partial class MainWindow : Window
         _chat.Closed += (_, _) => _chat = null;
         _chat.Show();
         _chat.Activate();
+        _chat.ShowStatus(_watchTimer.IsEnabled
+            ? "Screen watching is on. AI provider: " + _settings.Provider + "."
+            : "Screen watching is off. Your questions still include a one-time current screenshot.");
     }
 
     private void Watch_Click(object sender, RoutedEventArgs e)
@@ -54,6 +61,7 @@ public partial class MainWindow : Window
             _watchTimer.Stop();
             _lastSample = null;
             WatchButton.Content = "Watch off";
+            WatchButton.ToolTip = "Screen watching is paused. No screen captures are being taken.";
             _settings = _settings with { WatchOnStart = false };
         }
         else
@@ -61,6 +69,7 @@ public partial class MainWindow : Window
             _watchTimer.Start();
             _lastSample = null;
             WatchButton.Content = "Watching · pause";
+            WatchButton.ToolTip = "Watching is on: the screen is sampled every 3 seconds; a changed frame may be analyzed. Click to pause.";
             _settings = _settings with { WatchOnStart = true };
         }
         SettingsService.Save(_settings);
@@ -83,7 +92,7 @@ public partial class MainWindow : Window
             if (!changed || DateTime.UtcNow - _lastProactive < TimeSpan.FromSeconds(30)) return;
             _lastProactive = DateTime.UtcNow;
 
-            var response = await new OpenAiClient(_settings.Model).AskAsync(
+            var response = await AiAssistant.AskAsync(_settings,
                 "You are a quiet desktop helper. Review this screen and offer one brief, practical suggestion only if it is clearly useful. If there is nothing useful to add, respond with exactly [NO_SUGGESTION]. Do not claim you performed actions.",
                 frame.ToJpeg());
             if (!string.Equals(response.Trim(), "[NO_SUGGESTION]", StringComparison.OrdinalIgnoreCase))
@@ -113,8 +122,12 @@ public partial class MainWindow : Window
         {
             _settings = dialog.Result;
             SettingsService.Save(_settings);
+            _lastSample = null;
             if (_settings.WatchOnStart) _watchTimer.Start(); else _watchTimer.Stop();
             WatchButton.Content = _watchTimer.IsEnabled ? "Watching · pause" : "Watch off";
+            WatchButton.ToolTip = _watchTimer.IsEnabled
+                ? "Watching is on: the screen is sampled every 3 seconds; a changed frame may be analyzed. Click to pause."
+                : "Screen watching is paused. No screen captures are being taken.";
         }
     }
 

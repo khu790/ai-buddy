@@ -1,29 +1,43 @@
 <Window x:Class="AiBuddy.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AI Buddy Settings" Width="390" Height="390" WindowStyle="None" AllowsTransparency="True"
+        Title="AI Buddy Settings" Width="410" Height="510" WindowStyle="None" AllowsTransparency="True"
         Background="Transparent" Topmost="True" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
   <Border Background="#FFFCFF" BorderBrush="#DDD4F3" BorderThickness="1" CornerRadius="18" Padding="20">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
-        <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" />
+        <RowDefinition Height="*" /><RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
-      <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" Foreground="#493E5A" Margin="0,0,0,18" />
-      <StackPanel Grid.Row="1" Margin="0,0,0,14">
-        <TextBlock Text="OpenAI API key" FontWeight="SemiBold" Foreground="#493E5A" />
-        <PasswordBox x:Name="ApiKeyBox" Height="34" Padding="8" Margin="0,6,0,4" />
+      <TextBlock Text="Settings" FontSize="20" FontWeight="Bold" Foreground="#493E5A" Margin="0,0,0,16" />
+      <StackPanel Grid.Row="1" Margin="0,0,0,12">
+        <TextBlock Text="AI provider" FontWeight="SemiBold" Foreground="#493E5A" />
+        <ComboBox x:Name="ProviderBox" SelectedValuePath="Tag" Height="32" Margin="0,5,0,0" SelectionChanged="Provider_SelectionChanged">
+          <ComboBoxItem Content="Ollama (local, free)" Tag="Ollama" />
+          <ComboBoxItem Content="OpenAI (uses API credits)" Tag="OpenAI" />
+        </ComboBox>
+      </StackPanel>
+      <StackPanel Grid.Row="2" Margin="0,0,0,12">
+        <TextBlock Text="Vision model" FontWeight="SemiBold" Foreground="#493E5A" />
+        <TextBox x:Name="ModelBox" Height="32" Padding="8" Margin="0,5,0,0" />
+      </StackPanel>
+      <StackPanel x:Name="OllamaPanel" Grid.Row="3" Margin="0,0,0,12">
+        <TextBlock Text="Ollama address" FontWeight="SemiBold" Foreground="#493E5A" />
+        <TextBox x:Name="OllamaUrlBox" Height="32" Padding="8" Margin="0,5,0,0" />
+        <TextBlock Text="Install Ollama, then run: ollama run qwen3-vl:2b" FontSize="11" Foreground="#796D88" Margin="0,4,0,0" />
+      </StackPanel>
+      <StackPanel x:Name="OpenAiPanel" Grid.Row="3" Margin="0,0,0,12" Visibility="Collapsed">
+        <TextBlock Text="OpenAI API key (optional for local Ollama)" FontWeight="SemiBold" Foreground="#493E5A" />
+        <PasswordBox x:Name="ApiKeyBox" Height="32" Padding="8" Margin="0,5,0,4" />
         <TextBlock x:Name="KeyStateText" FontSize="11" Foreground="#796D88" TextWrapping="Wrap" />
       </StackPanel>
-      <StackPanel Grid.Row="2" Margin="0,0,0,14">
-        <TextBlock Text="Vision-capable model" FontWeight="SemiBold" Foreground="#493E5A" />
-        <TextBox x:Name="ModelBox" Height="34" Padding="8" Margin="0,6,0,0" />
-      </StackPanel>
-      <CheckBox x:Name="WatchStartCheck" Grid.Row="3" Content="Enable screen watching now and when AI Buddy starts" Foreground="#493E5A" Margin="0,0,0,14" />
-      <TextBlock Grid.Row="4" Text="Screen images are sent to OpenAI for analysis and are not saved on this PC." TextWrapping="Wrap" Foreground="#796D88" FontSize="12" />
-      <TextBlock x:Name="ErrorText" Grid.Row="5" Foreground="#B3405C" VerticalAlignment="Bottom" TextWrapping="Wrap" />
-      <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,14,0,0">
-        <Button Content="Remove key" Click="RemoveKey_Click" Margin="0,0,8,0" Padding="12,7" Background="#F4F0FA" BorderThickness="0" />
+      <CheckBox x:Name="WatchStartCheck" Grid.Row="4" Content="Enable screen watching now and when AI Buddy starts"
+                Foreground="#493E5A" Margin="0,0,0,10" />
+      <TextBlock x:Name="PrivacyText" Grid.Row="5" TextWrapping="Wrap" Foreground="#796D88" FontSize="12" />
+      <TextBlock x:Name="ErrorText" Grid.Row="6" Foreground="#B3405C" VerticalAlignment="Bottom" TextWrapping="Wrap" />
+      <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+        <Button x:Name="RemoveKeyButton" Content="Remove key" Click="RemoveKey_Click" Margin="0,0,8,0" Padding="12,7" Background="#F4F0FA" BorderThickness="0" />
         <Button Content="Cancel" IsCancel="True" Margin="0,0,8,0" Padding="12,7" Background="#F4F0FA" BorderThickness="0" />
         <Button Content="Save" IsDefault="True" Click="Save_Click" Padding="16,7" Background="#7256D8" Foreground="White" BorderThickness="0" />
       </StackPanel>
