@@ -17,6 +17,7 @@
   </Window.ContextMenu>
   <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Top">
     <Canvas x:Name="PetCanvas" Width="140" Height="280" Background="Transparent">
+      <Path Data="M 70,4 L 24,38 M 70,4 L 42,12 M 70,4 L 55,25 M 70,4 L 85,25 M 70,4 L 98,12 M 70,4 L 116,38 M 40,12 Q 70,21 100,12 M 30,23 Q 70,36 110,23 M 23,34 Q 70,50 117,34" Stroke="#B69ACD" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent" Opacity="0.9" />
       <Ellipse Canvas.Left="67" Canvas.Top="0" Width="6" Height="5" Fill="#B69ACD" />
       <Path x:Name="WebThread" Data="M 70,3 L 70,157" Stroke="#B69ACD" StrokeThickness="2" StrokeStartLineCap="Round" />
       <Canvas x:Name="SpiderArtwork" Width="140" Height="280" Background="Transparent">
