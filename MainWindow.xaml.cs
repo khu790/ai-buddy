@@ -29,25 +29,27 @@ public partial class MainWindow : Window
         _animationTimer.Tick += (_, _) => _bob.Y = Math.Sin((DateTime.UtcNow - _animationStarted).TotalSeconds * (_petIsActive ? 2.4 : 0.7)) * (_petIsActive ? 4 : 1);
         _animationTimer.Start();
         _activityTimer.Start();
-        WatchButton.Content = _settings.WatchOnStart ? "Watching · pause" : "Watch off";
-        WatchButton.ToolTip = "When enabled, AI Buddy checks for screen changes every 3 seconds and can pop up coding tips. It does not save a recording.";
         if (_settings.WatchOnStart)
         {
             _watchTimer.Start();
         }
+        UpdateWatchMenuItem();
         UpdatePetState();
     }
 
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         var area = SystemParameters.WorkArea;
-        Left = area.Right - Width - 24;
-        Top = area.Bottom - Height - 24;
+        Left = area.Left + (area.Width - Width) / 2;
+        Top = area.Top;
     }
 
-    private void DragWindow(object sender, MouseButtonEventArgs e)
+    private void Pet_Click(object sender, MouseButtonEventArgs e)
     {
-        if (e.ButtonState == MouseButtonState.Pressed) DragMove();
+        if (e.ChangedButton == MouseButton.Left && e.ButtonState == MouseButtonState.Pressed)
+        {
+            Chat_Click(sender, new RoutedEventArgs());
+        }
     }
 
     private void Chat_Click(object sender, RoutedEventArgs e)
@@ -61,27 +63,57 @@ public partial class MainWindow : Window
             : "Screen watching is off. Your questions still include a one-time current screenshot.");
     }
 
-    private void Watch_Click(object sender, RoutedEventArgs e)
+    private void WatchMenu_Click(object sender, RoutedEventArgs e) => ToggleWatching();
+
+    public bool IsWatching => _watchTimer.IsEnabled;
+    public bool IsSpiderVisible => IsVisible;
+
+    public void ToggleWatching() => SetWatching(!_watchTimer.IsEnabled);
+
+    public void SetWatching(bool enabled)
     {
-        if (_watchTimer.IsEnabled)
+        if (!enabled)
         {
             _watchTimer.Stop();
             _lastSample = null;
-            WatchButton.Content = "Watch off";
-            WatchButton.ToolTip = "Screen watching is paused. No screen captures are being taken.";
             _settings = _settings with { WatchOnStart = false };
         }
         else
         {
             _watchTimer.Start();
             _lastSample = null;
-            WatchButton.Content = "Watching · pause";
-            WatchButton.ToolTip = "Coding advice is on: the screen is sampled every 3 seconds and changed frames may be analyzed. Click to pause.";
             _settings = _settings with { WatchOnStart = true };
         }
         SettingsService.Save(_settings);
+        UpdateWatchMenuItem();
         UpdatePetState();
     }
+
+    private void UpdateWatchMenuItem()
+    {
+        if (WatchMenuItem is not null)
+            WatchMenuItem.Header = _watchTimer.IsEnabled ? "Pause screen watching" : "Enable screen watching";
+    }
+
+    public void ToggleSpiderVisibility()
+    {
+        if (IsVisible) Hide();
+        else Show();
+    }
+
+    public void OpenSettingsFromTray()
+    {
+        if (!IsVisible) Show();
+        OpenSettings();
+    }
+
+    public void ChatFromTray()
+    {
+        if (!IsVisible) Show();
+        Chat_Click(this, new RoutedEventArgs());
+    }
+
+    private void HideSpider_Click(object sender, RoutedEventArgs e) => Hide();
 
     private async void WatchTimer_Tick(object? sender, EventArgs e)
     {
@@ -117,8 +149,7 @@ public partial class MainWindow : Window
             _watchTimer.Stop();
             _settings = _settings with { WatchOnStart = false };
             SettingsService.Save(_settings);
-            WatchButton.Content = "Watch paused";
-            WatchButton.ToolTip = ex.Message;
+            UpdateWatchMenuItem();
             _chat?.ShowStatus("Screen watching paused: " + ex.Message);
             UpdatePetState();
         }
@@ -136,10 +167,7 @@ public partial class MainWindow : Window
             SettingsService.Save(_settings);
             _lastSample = null;
             if (_settings.WatchOnStart) _watchTimer.Start(); else _watchTimer.Stop();
-            WatchButton.Content = _watchTimer.IsEnabled ? "Watching · pause" : "Watch off";
-            WatchButton.ToolTip = _watchTimer.IsEnabled
-                ? "Coding advice is on: the screen is sampled every 3 seconds and changed frames may be analyzed. Click to pause."
-                : "Screen watching is paused. No screen captures are being taken.";
+            UpdateWatchMenuItem();
             UpdatePetState();
         }
     }

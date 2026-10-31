@@ -16,12 +16,34 @@ public partial class App : System.Windows.Application
         main.Show();
 
         var menu = new Forms.ContextMenuStrip();
-        menu.Items.Add("Open AI Buddy", null, (_, _) => main.Dispatcher.Invoke(() =>
+        menu.Items.Add("Open chat", null, (_, _) => main.Dispatcher.Invoke(() =>
         {
             main.Show();
-            main.Activate();
+            main.ChatFromTray();
         }));
+        menu.Items.Add("Settings", null, (_, _) => main.Dispatcher.Invoke(main.OpenSettingsFromTray));
+        var watchItem = new Forms.ToolStripMenuItem();
+        watchItem.Click += (_, _) => main.Dispatcher.Invoke(() =>
+        {
+            main.ToggleWatching();
+            watchItem.Checked = main.IsWatching;
+            watchItem.Text = main.IsWatching ? "Pause screen watching" : "Enable screen watching";
+        });
+        menu.Items.Add(watchItem);
+        var spiderItem = new Forms.ToolStripMenuItem();
+        spiderItem.Click += (_, _) => main.Dispatcher.Invoke(() =>
+        {
+            main.ToggleSpiderVisibility();
+            spiderItem.Text = main.IsSpiderVisible ? "Hide spider" : "Show spider";
+        });
+        menu.Items.Add(spiderItem);
         menu.Items.Add("Exit", null, (_, _) => Shutdown());
+        menu.Opening += (_, _) =>
+        {
+            watchItem.Checked = main.IsWatching;
+            watchItem.Text = main.IsWatching ? "Pause screen watching" : "Enable screen watching";
+            spiderItem.Text = main.IsSpiderVisible ? "Hide spider" : "Show spider";
+        };
         _tray = new Forms.NotifyIcon
         {
             Text = "AI Buddy",

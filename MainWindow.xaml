@@ -1,47 +1,35 @@
 <Window x:Class="AiBuddy.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="AI Buddy" Width="196" Height="246" WindowStyle="None" AllowsTransparency="True"
+        Title="AI Buddy" Width="180" Height="280" WindowStyle="None" AllowsTransparency="True"
         Background="Transparent" Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize"
-        WindowStartupLocation="Manual" Loaded="Window_Loaded">
+        WindowStartupLocation="Manual" Loaded="Window_Loaded"
+        MouseLeftButtonDown="Pet_Click">
   <Window.ContextMenu>
     <ContextMenu>
+      <MenuItem Header="Open chat" Click="Chat_Click" />
       <MenuItem Header="Settings" Click="Settings_Click" />
+      <Separator />
+      <MenuItem x:Name="WatchMenuItem" Header="Pause screen watching" Click="WatchMenu_Click" />
+      <MenuItem Header="Hide spider" Click="HideSpider_Click" />
       <MenuItem Header="Exit" Click="Exit_Click" />
     </ContextMenu>
   </Window.ContextMenu>
-  <Border Background="#F8F5FF" BorderBrush="#D9D0F6" BorderThickness="1" CornerRadius="25" Padding="12">
-    <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="30" />
-        <RowDefinition Height="*" />
-        <RowDefinition Height="34" />
-        <RowDefinition Height="32" />
-      </Grid.RowDefinitions>
-      <DockPanel Grid.Row="0" MouseLeftButtonDown="DragWindow">
-        <TextBlock Text="AI BUDDY" FontSize="12" FontWeight="Bold" Foreground="#55449A" VerticalAlignment="Center" />
-        <Button Content="⋯" Width="28" Height="26" DockPanel.Dock="Right" Click="Settings_Click"
-                Background="Transparent" BorderThickness="0" FontSize="18" Foreground="#55449A" />
-      </DockPanel>
-      <Viewbox x:Name="PetImage" Grid.Row="1" Margin="9,0,9,0" Stretch="Uniform">
-        <Canvas Width="140" Height="126">
-          <Ellipse Canvas.Left="67" Canvas.Top="0" Width="6" Height="5" Fill="#B69ACD" />
-          <Path Data="M 70,3 L 70,39" Stroke="#B69ACD" StrokeThickness="2" StrokeStartLineCap="Round" />
-          <Path Data="M 52,49 Q 37,38 26,42 L 13,31 M 50,57 Q 35,50 21,57 L 9,52 M 49,65 Q 34,65 21,77 L 10,88 M 53,73 Q 40,82 29,98 L 19,111 M 88,49 Q 103,38 114,42 L 127,31 M 90,57 Q 105,50 119,57 L 131,52 M 91,65 Q 106,65 119,77 L 130,88 M 87,73 Q 100,82 111,98 L 121,111" Stroke="#574268" StrokeThickness="3.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent" />
-          <Ellipse Canvas.Left="47" Canvas.Top="36" Width="46" Height="48" Fill="#64527F" Stroke="#3D304F" StrokeThickness="2" />
-          <Ellipse Canvas.Left="53" Canvas.Top="39" Width="34" Height="38" Fill="#76628F" Opacity="0.7" />
-          <Ellipse Canvas.Left="53" Canvas.Top="66" Width="34" Height="32" Fill="#8670A1" Stroke="#3D304F" StrokeThickness="2" />
-          <Ellipse x:Name="LeftOpenEye" Canvas.Left="58" Canvas.Top="74" Width="10" Height="13" Fill="#E8D8FF" />
-          <Ellipse x:Name="RightOpenEye" Canvas.Left="72" Canvas.Top="74" Width="10" Height="13" Fill="#E8D8FF" />
-          <Path x:Name="LeftClosedEye" Data="M 57,81 Q 63,86 69,81" Stroke="#E8D8FF" StrokeThickness="2" StrokeStartLineCap="Round" Fill="Transparent" Visibility="Collapsed" />
-          <Path x:Name="RightClosedEye" Data="M 71,81 Q 77,86 83,81" Stroke="#E8D8FF" StrokeThickness="2" StrokeStartLineCap="Round" Fill="Transparent" Visibility="Collapsed" />
-          <Path Data="M 67,88 Q 70,91 73,88" Stroke="#342A42" StrokeThickness="1.5" StrokeStartLineCap="Round" Fill="Transparent" />
-          <TextBlock x:Name="SleepMarks" Canvas.Left="88" Canvas.Top="42" Text="Zz" FontSize="15" FontWeight="Bold" Foreground="#72D0C1" Visibility="Collapsed" />
-          <TextBlock x:Name="ActiveSparkle" Canvas.Left="91" Canvas.Top="47" Text="✦" FontSize="18" Foreground="#72D0C1" />
-        </Canvas>
-      </Viewbox>
-      <Button x:Name="ChatButton" Grid.Row="2" Content="Chat" Click="Chat_Click" Background="#7256D8" Foreground="White" FontWeight="SemiBold" BorderThickness="0" />
-      <Button x:Name="WatchButton" Grid.Row="3" Margin="0,6,0,0" Content="Watch off" Click="Watch_Click" Background="#E8E2F8" Foreground="#493E5A" BorderThickness="0" />
-    </Grid>
-  </Border>
+  <Viewbox x:Name="PetImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Top">
+    <Canvas Width="140" Height="280" Background="Transparent">
+      <Ellipse Canvas.Left="67" Canvas.Top="0" Width="6" Height="5" Fill="#B69ACD" />
+      <Path Data="M 70,3 L 70,157" Stroke="#B69ACD" StrokeThickness="2" StrokeStartLineCap="Round" />
+      <Path Data="M 52,169 Q 37,158 26,162 L 13,151 M 50,177 Q 35,170 21,177 L 9,172 M 49,185 Q 34,185 21,197 L 10,208 M 53,193 Q 40,202 29,218 L 19,231 M 88,169 Q 103,158 114,162 L 127,151 M 90,177 Q 105,170 119,177 L 131,172 M 91,185 Q 106,185 119,197 L 130,208 M 87,193 Q 100,202 111,218 L 121,231" Stroke="#574268" StrokeThickness="3.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Fill="Transparent" />
+      <Ellipse Canvas.Left="47" Canvas.Top="156" Width="46" Height="48" Fill="#64527F" Stroke="#3D304F" StrokeThickness="2" />
+      <Ellipse Canvas.Left="53" Canvas.Top="159" Width="34" Height="38" Fill="#76628F" Opacity="0.7" />
+      <Ellipse Canvas.Left="53" Canvas.Top="186" Width="34" Height="32" Fill="#8670A1" Stroke="#3D304F" StrokeThickness="2" />
+      <Ellipse x:Name="LeftOpenEye" Canvas.Left="58" Canvas.Top="194" Width="10" Height="13" Fill="#E8D8FF" />
+      <Ellipse x:Name="RightOpenEye" Canvas.Left="72" Canvas.Top="194" Width="10" Height="13" Fill="#E8D8FF" />
+      <Path x:Name="LeftClosedEye" Data="M 57,201 Q 63,206 69,201" Stroke="#E8D8FF" StrokeThickness="2" StrokeStartLineCap="Round" Fill="Transparent" Visibility="Collapsed" />
+      <Path x:Name="RightClosedEye" Data="M 71,201 Q 77,206 83,201" Stroke="#E8D8FF" StrokeThickness="2" StrokeStartLineCap="Round" Fill="Transparent" Visibility="Collapsed" />
+      <Path Data="M 67,208 Q 70,211 73,208" Stroke="#342A42" StrokeThickness="1.5" StrokeStartLineCap="Round" Fill="Transparent" />
+      <TextBlock x:Name="SleepMarks" Canvas.Left="88" Canvas.Top="162" Text="Zz" FontSize="15" FontWeight="Bold" Foreground="#72D0C1" Visibility="Collapsed" />
+      <TextBlock x:Name="ActiveSparkle" Canvas.Left="91" Canvas.Top="167" Text="✦" FontSize="18" Foreground="#72D0C1" />
+    </Canvas>
+  </Viewbox>
 </Window>
