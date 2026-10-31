@@ -23,7 +23,7 @@ AI Buddy defaults to local Ollama at `http://localhost:11434`; no OpenAI API key
 
 ## Spider controls
 
-- The spider is a transparent, always-on-top overlay near the left edge of the primary display. Its web drops one quarter of the usable screen height before the spider; it has no card or panel behind it.
+- The spider is a transparent, always-on-top overlay near the right edge of the primary display. Its web drops 60% of the usable screen height before the spider; it has no card or panel behind it.
 - Left-click the spider to open chat. Right-click it for chat, settings, screen-watching, hide, and exit controls.
 - To hide or bring the spider back, use **Hide spider** or **Show spider** from the AI Buddy tray icon menu. It starts visible when the app starts.
 - The tray menu also lets you pause or resume screen watching without opening a panel.

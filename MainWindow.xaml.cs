@@ -43,12 +43,12 @@ public partial class MainWindow : Window
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         var area = SystemParameters.WorkArea;
-        var threadLength = Math.Max(120, area.Height / 4);
+        var threadLength = area.Height * 0.6;
         WebThread.Data = Geometry.Parse($"M 70,3 L 70,{threadLength.ToString("0.##", CultureInfo.InvariantCulture)}");
         Canvas.SetTop(SpiderArtwork, threadLength - 156);
         PetCanvas.Height = threadLength + 124;
         Height = PetCanvas.Height;
-        Left = area.Left + 32;
+        Left = area.Right - Width - 8;
         Top = area.Top;
     }
 
