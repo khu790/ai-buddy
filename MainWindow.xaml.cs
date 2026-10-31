@@ -10,6 +10,7 @@ public partial class MainWindow : Window
     private BuddySettings _settings = SettingsService.Load();
     private byte[]? _lastSample;
     private DateTime _lastProactive = DateTime.MinValue;
+    private string? _lastSuggestion;
     private bool _requestInProgress;
     private ChatWindow? _chat;
     private readonly System.Windows.Media.TranslateTransform _bob = new();
@@ -24,7 +25,7 @@ public partial class MainWindow : Window
         _animationTimer.Tick += (_, _) => _bob.Y = Math.Sin((DateTime.UtcNow - _animationStarted).TotalSeconds * 2.4) * 4;
         _animationTimer.Start();
         WatchButton.Content = _settings.WatchOnStart ? "Watching · pause" : "Watch off";
-        WatchButton.ToolTip = "When enabled, AI Buddy checks for screen changes every 3 seconds. It keeps no recording file.";
+        WatchButton.ToolTip = "When enabled, AI Buddy checks for screen changes every 3 seconds and can pop up coding tips. It does not save a recording.";
         if (_settings.WatchOnStart)
         {
             _watchTimer.Start();
@@ -69,7 +70,7 @@ public partial class MainWindow : Window
             _watchTimer.Start();
             _lastSample = null;
             WatchButton.Content = "Watching · pause";
-            WatchButton.ToolTip = "Watching is on: the screen is sampled every 3 seconds; a changed frame may be analyzed. Click to pause.";
+            WatchButton.ToolTip = "Coding advice is on: the screen is sampled every 3 seconds and changed frames may be analyzed. Click to pause.";
             _settings = _settings with { WatchOnStart = true };
         }
         SettingsService.Save(_settings);
@@ -89,16 +90,19 @@ public partial class MainWindow : Window
             }
             var changed = ScreenCapture.DifferenceRatio(_lastSample, frame.ChangeSample) >= 0.012;
             _lastSample = frame.ChangeSample;
-            if (!changed || DateTime.UtcNow - _lastProactive < TimeSpan.FromSeconds(30)) return;
+            if (!changed || DateTime.UtcNow - _lastProactive < TimeSpan.FromSeconds(45)) return;
             _lastProactive = DateTime.UtcNow;
 
             var response = await AiAssistant.AskAsync(_settings,
-                "You are a quiet desktop helper. Review this screen and offer one brief, practical suggestion only if it is clearly useful. If there is nothing useful to add, respond with exactly [NO_SUGGESTION]. Do not claim you performed actions.",
+                "You are AI Buddy, a quiet coding coach. Inspect the screenshot and first decide whether the user is clearly coding: look for a code editor or IDE, source code, a terminal running development commands, compiler output, a debugger, or technical documentation related to code. If the screen is not clearly about programming, or the visible details do not support useful advice, respond with exactly [NO_SUGGESTION]. Otherwise give one specific, practical coding tip grounded in what is visible. Prefer pointing out a likely bug, explaining an error, or suggesting a small next step. Keep it to at most two short sentences and under 45 words. Do not repeat generic advice, guess at hidden code, interrupt for minor style preferences, or claim you changed anything.",
                 frame.ToJpeg());
-            if (!string.Equals(response.Trim(), "[NO_SUGGESTION]", StringComparison.OrdinalIgnoreCase))
+            var suggestion = response.Trim();
+            if (!string.Equals(suggestion, "[NO_SUGGESTION]", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(suggestion, _lastSuggestion, StringComparison.OrdinalIgnoreCase))
             {
-                _chat?.AddProactive(response);
-                SuggestionPopup.ShowNear(this, response);
+                _lastSuggestion = suggestion;
+                _chat?.AddProactive(suggestion);
+                SuggestionPopup.ShowNear(this, suggestion);
             }
         }
         catch (Exception ex)
@@ -126,7 +130,7 @@ public partial class MainWindow : Window
             if (_settings.WatchOnStart) _watchTimer.Start(); else _watchTimer.Stop();
             WatchButton.Content = _watchTimer.IsEnabled ? "Watching · pause" : "Watch off";
             WatchButton.ToolTip = _watchTimer.IsEnabled
-                ? "Watching is on: the screen is sampled every 3 seconds; a changed frame may be analyzed. Click to pause."
+                ? "Coding advice is on: the screen is sampled every 3 seconds and changed frames may be analyzed. Click to pause."
                 : "Screen watching is paused. No screen captures are being taken.";
         }
     }

@@ -13,13 +13,38 @@ public sealed class SuggestionPopup : Window
 
     private SuggestionPopup(string text)
     {
-        Width = 290;
-        Height = 130;
+        Width = 320;
+        Height = 150;
         WindowStyle = WindowStyle.None;
         AllowsTransparency = true;
         Background = MediaBrushes.Transparent;
         Topmost = true;
         ShowInTaskbar = false;
+        var closeButton = new System.Windows.Controls.Button
+        {
+            Content = "×",
+            Width = 26,
+            Height = 24,
+            Padding = new Thickness(0),
+            Background = MediaBrushes.Transparent,
+            BorderThickness = new Thickness(0),
+            Foreground = new SolidColorBrush(MediaColor.FromRgb(85, 68, 154)),
+            FontSize = 18,
+            ToolTip = "Dismiss coding tip"
+        };
+        closeButton.Click += (_, _) => Close();
+
+        var header = new DockPanel { LastChildFill = true, Margin = new Thickness(0, 0, 0, 6) };
+        DockPanel.SetDock(closeButton, Dock.Right);
+        header.Children.Add(closeButton);
+        header.Children.Add(new TextBlock
+        {
+            Text = "🐰  Coding tip",
+            FontWeight = FontWeights.Bold,
+            Foreground = new SolidColorBrush(MediaColor.FromRgb(85, 68, 154)),
+            VerticalAlignment = VerticalAlignment.Center
+        });
+
         Content = new Border
         {
             Background = new SolidColorBrush(MediaColor.FromRgb(255, 252, 255)),
@@ -31,12 +56,12 @@ public sealed class SuggestionPopup : Window
             {
                 Children =
                 {
-                    new TextBlock { Text = "🐰  A thought", FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(MediaColor.FromRgb(85, 68, 154)), Margin = new Thickness(0, 0, 0, 6) },
-                    new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap, Foreground = new SolidColorBrush(MediaColor.FromRgb(38, 51, 68)) }
+                    header,
+                    new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap, Foreground = new SolidColorBrush(MediaColor.FromRgb(38, 51, 68)), MaxHeight = 88 }
                 }
             }
         };
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(14) };
+        _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(18) };
         _timer.Tick += (_, _) => { _timer.Stop(); Close(); };
         Closed += (_, _) => _timer.Stop();
     }

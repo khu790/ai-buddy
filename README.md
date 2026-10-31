@@ -28,12 +28,12 @@ AI Buddy defaults to local Ollama at `http://localhost:11434`; no OpenAI API key
 - In local Ollama mode, the image is sent to the Ollama service on this PC. In OpenAI mode, it is sent to the configured OpenAI API.
 - Captures are held in memory only and are not written as image or video files.
 
-## Screen watching
+## Pop-up coding advice
 
-- Screen watching is off by default. Click **Watch off** or enable it in Settings. The button changes to **Watching · pause** while active.
-- While active, AI Buddy samples the desktop every 3 seconds and compares a small in-memory image sample. It sends a full frame for analysis only after a meaningful change and at most once every 30 seconds.
-- The assistant offers a short suggestion only when it sees something useful. It never clicks, types into, or controls other apps.
-- This is screen observation, not a saved screen recording. Pause watching at any time using the rabbit's button.
+- Enable **pop-up coding advice** with the rabbit's **Watch off** button or in Settings. The button changes to **Watching · pause** while active.
+- While active, AI Buddy samples the desktop every 3 seconds and compares a small in-memory image sample. It sends a changed full frame to the selected AI provider no more than once every 45 seconds.
+- The assistant checks whether the screen clearly shows an IDE, code, terminal, debugger, build error, or coding documentation. It stays quiet outside coding contexts and shows one brief, actionable tip in a dismissible pop-up when useful.
+- It never clicks, types into, or controls other apps. This is screen observation, not a saved video recording. Pause watching at any time using the rabbit's button.
 
 ## Settings and privacy
 

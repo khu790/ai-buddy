@@ -32,7 +32,7 @@
         <PasswordBox x:Name="ApiKeyBox" Height="32" Padding="8" Margin="0,5,0,4" />
         <TextBlock x:Name="KeyStateText" FontSize="11" Foreground="#796D88" TextWrapping="Wrap" />
       </StackPanel>
-      <CheckBox x:Name="WatchStartCheck" Grid.Row="4" Content="Enable screen watching now and when AI Buddy starts"
+      <CheckBox x:Name="WatchStartCheck" Grid.Row="4" Content="Enable pop-up coding advice now and when AI Buddy starts"
                 Foreground="#493E5A" Margin="0,0,0,10" />
       <TextBlock x:Name="PrivacyText" Grid.Row="5" TextWrapping="Wrap" Foreground="#796D88" FontSize="12" />
       <TextBlock x:Name="ErrorText" Grid.Row="6" Foreground="#B3405C" VerticalAlignment="Bottom" TextWrapping="Wrap" />
